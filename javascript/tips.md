@@ -77,6 +77,12 @@ a = b;
 )()//打印aaa
 //解析：var变量提升，foo会提升，函数声明会提升，但是函数表达式不会提升。第一例：当执行到给x赋值是foo是undefined。所以不会执行foo(),所以会报错
 ```
+## 异步函数不支持外层try/catch
+```javascript
+try {
+  Promise.reject('报错了');
+} catch(e) {
+  console.log(e)
+}
+```
 
-
-    

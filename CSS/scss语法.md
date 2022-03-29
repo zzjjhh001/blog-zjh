@@ -90,7 +90,7 @@ a {
 7. maps
 
 ### 运算
-1. + - * / %;
+1. "+ - * / %";
 2. #{}：包裹声明的对象，那么将不会被计算。可以理解为里边的东西不会与外边的产生计算，但是内部自己可以计算。#{4px + 2px} = 6px;
 ```css
 $w: 6px;
@@ -163,3 +163,48 @@ font-size: $w/$d;
 // 就是相当于在被extend的选择器上加 , .seriousError
 ```
 
+### 混入
+@mixin 指令允许我们定义一个可以在整个样式表中重复使用的样式。
+@include 指令可以将混入（mixin）引入到文档中。
+```scss
+@mixin a-b {
+  color: red;
+  font-size: 20px;
+}
+.class {
+  @include a-b;
+}
+// 
+.class {
+  color: red;
+  font-size: 20px;
+}
+```
+
+@mixin支持传递参数，支持指定默认值。
+```scss
+@mixin a-c($color: blue, $size: 20px) {
+  color: $color;
+  font-size: $size;
+}
+.class {
+  @include a-c(red, 30px);
+}
+// 
+.class {
+  color: red;
+  font-size: 30px;
+}
+```
+@mixin中可以使用@include。
+
+### 函数
+#### 数字函数
+- abs(num): 取绝对值
+- ceil(num): 向上取整
+- floor(num): 向下取整
+- comparable(num1, num2): 返回一个boolean，两个参数是否可以比较。
+- max(...nums): 返回最大值
+- min(...nums): 返回最小值
+- percentage(num): 将数字转化为百分比的表达形式; 1.2 => 120
+- random(num): 返回 0-1 区间内的随机小数
