@@ -1,4 +1,6 @@
 ## 基本写法
+scss转换css网站：https://www.sassmeister.com/
+scss中文文档：https://www.sass.hk/docs/
 ### 嵌套写法
 ```css
 .c {
@@ -92,6 +94,7 @@ a {
 ### 运算
 1. "+ - * / %";
 2. #{}：包裹声明的对象，那么将不会被计算。可以理解为里边的东西不会与外边的产生计算，但是内部自己可以计算。#{4px + 2px} = 6px;
+3. 关系运算 <, >, <=, >= 也可用于数字运算，相等运算 ==, != 可用于所有数据类型。没有全等===
 ```css
 $w: 6px;
 $d: 3px;
@@ -145,7 +148,7 @@ font-size: $w/$d;
   border: 1px #f00;
   background-color: #fdd;
 }
-// css
+// 转换过的css
 .attention, .seriousError {
   font-size: 3em;
   background-color: #ff0;
@@ -161,6 +164,30 @@ font-size: $w/$d;
 }
 // 样式覆盖：看定义在哪，而不是看在哪里引入；
 // 就是相当于在被extend的选择器上加 , .seriousError
+// 可以理解为在所有出现过被继承的样式复制一份，然后把被继承的元素改为继承的元素。
+// scss
+.c {
+    width: 20px;
+}
+.c .d {
+    color: red;
+}
+.f {
+    @extend .c;
+    font-size: 12px;
+}
+// 转换过的css
+.c, .f {
+  width: 20px;
+}
+
+.c .d, .f .d {
+  color: red;
+}
+
+.f {
+  font-size: 12px;
+}
 ```
 
 ### 混入
@@ -208,3 +235,45 @@ font-size: $w/$d;
 - min(...nums): 返回最小值
 - percentage(num): 将数字转化为百分比的表达形式; 1.2 => 120
 - random(num): 返回 0-1 区间内的随机小数
+
+## 控制指令
+### @if, else if, else
+```scss
+// scss
+$c: c;
+p {
+  @if $c == 'ccc' {
+    color: red;
+  }
+  @else if $c == 'cc'{
+    color: blue;
+  }
+  @else {
+    color: green;
+  }
+}
+// css
+p {
+  color: green;
+}
+```
+### @for
+@for $c from 1 to 3: 不包括3；
+@for $c from 1 through 3: 包括3；
+
+```scss
+// scss
+@for $c from 1 to 3 {
+  item-#{$c} {
+    color: red;
+  }
+}
+// css
+item-1 {
+  color: red;
+}
+
+item-2 {
+  color: red;
+}
+```
