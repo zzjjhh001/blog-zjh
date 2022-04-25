@@ -162,3 +162,12 @@ metaInfo {
   }
 }
 ```
+
+## vue懒加载
+路由懒加载，和组件懒加载
+```javascript
+const c = () => import('../c'); // 推荐使用
+```
+
+## git合并某次commit
+git cherry-pick 提交记录ID
