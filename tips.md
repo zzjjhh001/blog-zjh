@@ -51,6 +51,7 @@ string时一个基本数据类型，String是一个类。
 ## absolute
 绝对定位是相对于最近的非static祖先元素的paddingbox。
 如果left和right也为auto的话，元素的水平位置就是它假如作为静态(即static)元素时该在的位置
+absolute定位元素的默认位置就是该元素假定在标准文档流中的位置。
 
 ## 禁用ESLint
 禁用一行
@@ -166,8 +167,157 @@ metaInfo {
 ## vue懒加载
 路由懒加载，和组件懒加载
 ```javascript
-const c = () => import('../c'); // 推荐使用
+const c = () => import('../c'); // 推荐使用，(好像需要babel配置)
+const c = () => require('../c'); // 推荐使用
 ```
 
 ## git合并某次commit
 git cherry-pick 提交记录ID
+
+## 滚动条
+1. 默认不展示，hover时展示
+```css
+.aclass {
+  overflow-y: hidden;
+  &:hover {
+    overflow-y: scroll;
+  }
+}
+```
+
+## 合并对象属性,给默认值
+```javascript
+const a = { 
+  name: 1,
+  age: 2
+}
+const b = {...a, name: 2}
+console.log(b)   // { name: 2, age: 2 }
+```
+
+## vue组件开发并挂在到真实DOM上
+```javascript
+// 引入组件
+import component from './component';
+// 生成构造器
+const Constructor = Vue.extend(component);
+// 生成虚拟dom结构
+this.releaseDom = new Constructor();
+// 生成真实dom,$el指向生成的真实dom
+this.releaseDom.$mount();
+// 将真实dom，append到页面dom
+dom.appendChild(this.releaseDom.$el);
+// or
+this.$releaseDom.$mount('#app');
+```
+
+## 冻结对象
+1. 冻结一层：如果一个属性的值是个对象，则这个对象中的属性是可以修改的。
+2. 一个被冻结的对象再也不能被修改；冻结了一个对象则不能向这个对象添加新的属性，不能删除已有属性，不能修改该对象已有属性的可枚举性、可配置性、可写性，以及不能修改已有属性的值。
+3. 冻结一个对象后该对象的原型也不能被修改
+
+```javascript
+const data = Object.freeze(data);
+```
+
+## 定义不改变的常量的常见用法
+```javascript
+const sourceMap = {
+  CREATE: 0,
+  FINISH: 1
+}
+function generateEnum(sourceMap) {
+  return Object.keys(sourceMap).reduce((targetEnum, key) => {
+    targetEnum[sourceMap[key]] = key;
+    return targetEnum;
+  }, sourceMap);
+}
+export default sourceMapEnum = Object.freeze(generateEnum(sourceMap));
+// { CREATE: 0, FINISH: 1, '0': 'CREATE', '1': 'FINISH' }
+// 
+```
+
+## vue的diff
+vue中对数组的watch时通过watch它的方法实现的。
+但是特殊场景下，直接修改数组的某一项，视图也会修改。
+
+```javascript
+data() {
+  return {
+    answer: 'b',
+    msgList: []
+  }
+}
+
+function test() {
+  this.answer = 'a';
+  this.msgList[2].name = 'qwewq';
+}
+// 执行test方法；
+// 因为修改了answer所以已经触发了vue的diff。
+// 在diff中会发现数组变化，就会触发页视图变化。
+// 如果没有修改answer中，而只修改了msgList,那么视图不会变化，因为不会触发vue的diff。就不会对比新老虚拟dom。
+```
+
+## 位运算符
+### ^
+异或符号:不同就是1，相同就是0
+| 元 | 元| 结果|
+| -- | -- | -- |
+| 1 | 1 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 0 | 0 | 0 |
+
+### &
+与符号：全是1才是1.
+| 元 | 元| 结果|
+| -- | -- | -- |
+| 1 | 1 | 1 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 0 | 0 | 0 |
+### ｜
+或符号: 有一个为1就是1
+| 元 | 元| 结果|
+| -- | -- | -- |
+| 1 | 1 | 1 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 0 | 0 | 0 |
+### 
+同或符号：相同为1，不同为0
+| 元 | 元| 结果|
+| -- | -- | -- |
+| 1 | 1 | 1 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 0 | 0 | 1 |
+
+### >>
+右移符号
+8 >> 2 === 2 // true
+### <<
+左移符号
+8 << 2 === 32 // true
+
+## vue-router跳转
+⚠️： name和params配合使用。
+```javascript
+{
+  path: 'zhibo/live/:id',
+  name: 'zhibo'
+}
+// 会匹配所有的zhibo/live/*的url
+const url = this.$router.resolve({
+  name: 'zhibo/live',
+  params: {
+    id: 213
+  }
+})
+// url是一个跳转路由。url.href是拼接好的路径，例如：${location.origin}/zhibo/live/213
+```
+- 路由文件中，页面路由不配置要传递的params，在新页面中也能拿到参数。
+- 路由跳转时，使用params传递参数时，要小心拼接好的url,如果最后的参数以.jpg此类结尾，浏览器会识别为一张图片的url。
+## flex-grow
+flex-grow是分配剩余的空间，所以flex的子项现在占有的空间是确定的，就是每个元素需要有一个基本的宽度/高度。
