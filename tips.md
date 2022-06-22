@@ -321,3 +321,33 @@ const url = this.$router.resolve({
 - 路由跳转时，使用params传递参数时，要小心拼接好的url,如果最后的参数以.jpg此类结尾，浏览器会识别为一张图片的url。
 ## flex-grow
 flex-grow是分配剩余的空间，所以flex的子项现在占有的空间是确定的，就是每个元素需要有一个基本的宽度/高度。
+
+## components命名
+推荐：注册时首字母大写，后边也大写，使用时，大写变小写，加-。
+```javascript
+import PageTitle from './pageTitle.vue'
+components: {
+  PageTitle
+}
+<page-title />
+
+```
+
+## vue中的键盘和鼠标事件
+指定回车键和keyCode
+```html
+// 键修饰符，键别名
+<input @keyup.enter="onEnter" />
+
+// 键修饰符，键代码
+<input @keyup.13="onEnter" />
+// 指定鼠标按住和弹起的事件
+<button v-on="{ mousedown: doThis, mouseup: doThat }"></button>
+```
+## vue的template中如何使用vue的data，props等
+$data,$router,$props
+```html
+<component v-bind="$props" :a="$data.a" >
+```
+## vm.$isServer
+当前 Vue 实例是否运行于服务器。区分是不是服务端渲染
