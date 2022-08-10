@@ -351,3 +351,106 @@ $data,$router,$props
 ```
 ## vm.$isServer
 当前 Vue 实例是否运行于服务器。区分是不是服务端渲染
+
+## textarea内部滚动
+dom.scrollTop = 100;
+## IOS 12.1 css设置position为fixed，弹起软键盘 兼容性
+```javascript
+// 微信文档 https://developers.weixin.qq.com/community/develop/doc/00044ae90742f8c82fb78fcae56800
+if (isIos()) {
+  window.addEventListener('focusout', function() {
+    // 软键盘收起的事件处理
+    setTimeout(() => {
+      window.scrollTo(0, document.documentElement.scrollTop || document.body.scrollTop);
+    });
+  });
+}
+```
+## IOS和android唤起软键盘差异
+IOS中是window.innerHeight不变，页面整体上滚
+ANDROID中是window.innerHeight变小，触发resize事件。
+## IOS聚焦
+// 主动调用focus会在ios和android中都触发focus和focusin事件，但是ios中键盘没有弹起。
+IOS聚焦必须用户主动点击操作。
+## 输入框的focus和blur事件
+1. focusout和focusin会冒泡。
+2. focus和blur不会冒泡。
+3. 顺序：focusin > focus > focusout > blur
+## express框架中locals对象
+1. app.locals和res.locals是expess中用于渲染模板的两个对象.
+2. app.locals上通常挂载常量信息（如博客名，描述，作者信息），res.locals上通常挂载变量信息.
+3. locals对象用于将数据传递至所渲染的模板中。
+4. locals对象会被传递至页面，在模板中可以直接引用该对象的属性，也可以通过该对象引用.
+
+## 页面不能缩放
+```html
+// 解决方案：在模版上加
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+```
+- width - viewport的宽度：device-width：device-width 为设备的宽度（单位为缩放为 100% 时的 CSS 的像素）
+- height - viewport的高度
+- initial-scale - 初始的缩放比例
+- minimum-scale - 允许用户缩放到的最小比例
+- maximum-scale - 允许用户缩放到的最大比例
+- user-scalable - 用户是否可以手动缩放
+## 解决IOS的刘海和安全区域的问题
+- 解决核心区域不会被设备圆角(corners)，传感器外壳(sensor housing，齐刘海) 以及底部的 Home Indicator 遮挡
+- name为viewport的meta标签的content上加viewport-fit=cover。
+## 开启蒙层body不能滚动
+```
+<!-- js -->
+fixedBody() {
+  if (document.body.classList.contains('noScroll')) {
+    document.body.classList.remove('noScroll');
+    document.documentElement.classList.remove('noScroll');
+    document.scrollingElement.scrollTop = this.scrollTop;
+  } else {
+    this.scrollTop = document.scrollingElement.scrollTop;
+    document.body.classList.add('noScroll');
+    document.documentElement.classList.add('noScroll');
+    document.body.style.top = -this.scrollTop + 'px';
+  }
+},
+<!-- css -->
+.noScroll {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+```
+
+## 禁止右键操作
+```javascript
+指定dom的oncontextmenu事件
+this.dom.oncontextmenu = function () { return false; };
+```
+
+## html模版
+<html lang="en">
+lang="zh-CN": 会指定语言。
+chrome下如果是en会唤起谷歌翻译。
+
+## 严格模式
+区别：
+- 变量声明
+- 禁止使用with
+- 设立eval作用域
+- 函数中的this指向问题
+- 删除变量
+- 函数参数不能重名
+- 八进制字面量表示法
+- arguments不追踪参数变化
+
+## vue2中v-model
+当v-model使用在自定义组件上时，可以在组件上使用model去修改v-model绑定的参数
+```javascript
+exprot default {
+  model: {
+    prop: 'title',
+    event: 'input2'
+  }
+}
+```

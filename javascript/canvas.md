@@ -10,6 +10,10 @@ cnt.strokeStyle = 'red'
 cnt.fillStyle = '#ffffff'
 cnt.lineWidth = '4px'
 ```
+#### 使用心得
+1. 注意要save和restore。
+2. beginPath是开始绘制路径，closePath是绘制一个回到原点的路径。
+3. 注意修改canvas的基本属性时，要考虑对下次绘制的影响。
 ### 基本api
 - cnt.strokeStyle: 设置画笔的颜色，描边使用。
 - cnt.fillStyle: 设置填充色。
@@ -21,7 +25,8 @@ cnt.lineWidth = '4px'
 - cnt.lineJoin: 设置线段交点的形状(round: 圆转， bevel：取平，miter：出尖)
 
 #### 绘制路径
-- cnt.beginPath：表示要开始画新的路径.
+- cnt.beginPath：表示要开始画新的路径,会清除掉以前的老的路径。重新开始新路径。
+- cnt.closePath：将笔点返回到当前子路径起始点的方法。它尝试从当前点到起始点绘制一条直线。如果图形已经是封闭的或者只有一个点，那么此方法不会做任何操作。
 - cnt.arc(x,y,r,sdeg,edeg,counterclockwise): 画圆弧，以x,y为圆心，r为半径，sdeg为开始弧度，edeg为结束弧度，count是否逆时针画，默认为顺时针。sdeg和edeg是弧度不是角度。360 = 2Math.PI; 
 - cnt.arcTo(x1,y1,x2,y2,r):画切线。画初始点和(x2,y2)的切线，(x1，y1)是交点。
 - cnt.bezierCurveTo(cx1,cy1,cx2,cy2,x,y):画三次贝塞尔曲线，(cx1,cy1)(cx2,cy2)为控制点，原点和(x,y)为起始和终止点。
@@ -47,7 +52,7 @@ cnt.lineWidth = '4px'
 - closePath()绘制一个返回起点的线。
 - isPointInPath(x,y): 判断点(x,y)是否在画布上
 - cnt.save()： 保存此时的canvas的状态。颜色，原点等。
-- cnt.restore(): 从暂存栈中取出并恢复之前保存的设置。
+- cnt.restore(): 从暂存栈中取出并恢复之前保存的设置。就是删除restore和上次save中间对cnt的属性操作。恢复到上次save时。
 - 可以多次调用save，多次调用restore。**类似有一个历史记录。**
 - **save()方法只保存应用到绘图上下文的设置和变换，不保存绘图上下文的内容**
 
@@ -85,6 +90,13 @@ cnt.fillRect(30,30,70,70)
 ##### 径向渐变
 - cnt.createRadialGradient(100,100,10,100,100,20):参数依次是内圆的坐标x,y，半径r，外圆的坐标x,y，半径r。
 - 其他和线性渐变一致。
+
+##### 圆弧渐变
+- 在具有给定坐标的点周围创建渐变。
+- cnt.createConicGradient(startAngle, x, y):参数依次是开始渐变的角度(单位是弧度)，原点的坐标x,y。
+- 从右侧轴开始。
+- 可以用来绘制圆锥渐变。
+- 注意它的兼容性。
 
 #### 绘制图案
 先创建一个图案，再绘制到canvas中。就像先创建一个纹理，然后粘到某个地方(路径，矩形，闭合的区域)
