@@ -454,3 +454,22 @@ exprot default {
   }
 }
 ```
+
+## console
+- 如果时基本数据类型，则直接打印。
+- 如果时引用类型，只打印第一层属性
+- 点击展开查看其他属性时，会再去内存中去取，就会出现，展示的内容不是代码执行到console时的 内容
+
+## 合并对象的值
+Object.assign和解构赋值。
+undefined也会识别为有效值，后边的undefined也会覆盖前面的值。
+```
+const a = {
+  b: 1
+}
+const c = {
+  b: undefined
+}
+Object.assign({}, a, c) // { b: undefined }
+{...a, ...b} // { b: undefined }
+```

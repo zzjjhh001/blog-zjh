@@ -59,3 +59,12 @@ git merge -X ours dev
 ```
 git merge -X theirs dev
 ```
+## 操作
+### 查看git配置信息
+- git config --list
+### 设置git用户名、密码、邮箱的配置
+- git config user.name 用户名
+### 设置git用户名、密码、邮箱的配置（全局配置）
+- git config --global user.name 用户命
+- git config --global user.password 密码
+- git config --global user.email 邮箱

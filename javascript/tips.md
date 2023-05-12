@@ -85,4 +85,13 @@ try {
   console.log(e)
 }
 ```
-
+## JSON
+1. JSON.stringify
+   - 局限性
+     1. 使用JSON.Stringify 转换的数据中，如果包含 function，undefined，Symbol，这几种类型，不可枚举属性， JSON.Stringify序列化后，这个键值对会消失。
+     2. 转换的数据中包含 NaN，Infinity 值（含-Infinity），JSON序列化后的结果会是null。
+     3. 转换的数据中包含Date对象，JSON.Stringify序列化之后，会变成字符串。
+     4. 转换的数据包含RegExp 引用类型序列化之后会变成空对象。
+     5. 无法序列化不可枚举属性。
+     6. 无法序列化对象的循环引用，（例如: obj[key] = obj)。
+     7. 无法序列化对象的原型链。
