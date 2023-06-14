@@ -10,10 +10,35 @@ cnt.strokeStyle = 'red'
 cnt.fillStyle = '#ffffff'
 cnt.lineWidth = '4px'
 ```
-#### 使用心得
+### 使用心得
 1. 注意要save和restore。
 2. beginPath是开始绘制路径，closePath是绘制一个回到原点的路径。
 3. 注意修改canvas的基本属性时，要考虑对下次绘制的影响。
+### ⚠️注意事项
+#### dpi导致的毛边
+##### 问题
+使用canvas时，由于不同手机的dpi不同，会导致canvas绘制时出现毛边。
+##### 解决方案
+1. 适配dpi
+```javascript
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const scale = window.devicePixelRatio;
+canvas.width = Math.floor(size * scale);
+canvas.height = Math.floor(size * scale);
+ctx.scale(scale, scale);
+```
+2. 引入hidpi-canvas
+- 没有实际去尝试。(TODO)
+```javascript
+<script src="assets/js/hidpi-canvas.min.js" ></script>
+const canvas = document.getElementById('canvas');
+this.ctx = canvas.getContext("2d");
+const ratio = this.getPixelRatio(this.ctx);
+canvas.width = 360 * ratio;
+canvas.height = 360 * ratio;
+```
+
 ### 基本api
 - cnt.strokeStyle: 设置画笔的颜色，描边使用。
 - cnt.fillStyle: 设置填充色。
@@ -106,6 +131,69 @@ cnt.fillRect(30,30,70,70)
 let image = document.querySelector('image');
 cnt.fillStyle = image;
 cnt.fillRect(10,10,100,100);
+```
+
+### 合成图片和马赛克
+- 合成图片：就是在canvas中绘制两张图片，然后吧图片转换成base64,再输入到页面中
+- 1. const a = canvas.toDataURL();
+- 2. img.setAttribute('src', a);
+- 马赛克：就是把图片的像素操作修改一下
+- 1. let imageData = cnt.getImageData(0, 0, canvas.width, canvas.height)
+- 2. 见drawMosaic函数
+```javascript
+const image = new Image(10, 10);
+image.src = 'http://127.0.0.1:8080/test.png';
+const canvas = document.getElementById('canvas');
+const img = document.getElementById('img');
+const cnt = canvas.getContext('2d');
+image.onload = function() {
+  flag++;
+  if(flag >= 2) {
+    cnt.drawImage(image, 0, 0, 200, 200);
+    cnt.drawImage(image2, 0, 0, 100, 100);
+    // 绘图
+    // const a = canvas.toDataURL();
+    // img.setAttribute('src', a);
+    // 马赛克
+    let imageData = cnt.getImageData(0, 0, canvas.width, canvas.height)
+    drawMosaic(imageData)
+  }
+}
+const image2 = new Image(10, 10);
+  image2.src = 'http://127.0.0.1:8080/favicon.ico';
+  image2.onload = function() {
+    flag++;
+    if(flag >= 2) {
+      cnt.drawImage(image, 0, 0, 200, 200);
+      cnt.drawImage(image2, 0, 0, 100, 100);
+      // 绘图
+      // const a = canvas.toDataURL();
+      // img.setAttribute('src', a);
+      // 马赛克
+      let imageData = cnt.getImageData(0, 0, canvas.width, canvas.height)
+      drawMosaic(imageData)
+    }
+  }
+  function drawMosaic(imageData){
+      let r, g, b;
+      for(let x = 0; x <= canvas.width; x += 10) {
+          for(let y = 0; y <= canvas.height; y += 10) {
+
+              // 获取具体位置上像素点的RGB值，然后在canvas上重新绘制图片
+
+              r = imageData.data[(y * canvas.width + x) * 4]
+              g = imageData.data[(y * canvas.width + x) * 4 + 1]
+              b = imageData.data[(y * canvas.width + x) * 4 + 2]
+
+              color = `rgb(${r}, ${g}, ${b})`
+
+               // 在图像具体位置生成马赛克
+
+               cnt.fillStyle = color
+               cnt.fillRect(x, y, 10, 10) // 最终将马赛克绘制上去
+          }
+      }
+    }
 ```
 
 #### 绘制图像数据

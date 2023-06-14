@@ -74,7 +74,7 @@ function a() {
 }
 // b
 function b() {
-    a().then(res => res.data)
+  a().then(res => res.data)
 }
 import a from './util/a.js'
 import b from './util/b.js'
