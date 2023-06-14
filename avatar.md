@@ -1,0 +1,1 @@
+avatar的tags/branches的分支根目录下有ssr_rev.txt文件是配置关联的ssi版本。

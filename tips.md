@@ -167,8 +167,24 @@ metaInfo {
 ## vue懒加载
 路由懒加载，和组件懒加载
 ```javascript
-const c = () => import('../c'); // 推荐使用，(好像需要babel配置)
-const c = () => require('../c'); // 推荐使用
+// 组件懒加载
+components: {
+  c : () => import('../c'); // 推荐使用，(好像需要babel配置)
+  c : () => require('../c'); // 推荐使用
+}
+// 如果组件导入使用命名导出，则可以对返回的 Promise 使用对象解构
+components: {
+  UiAlert: () => import('keen-ui').then(({ UiAlert }) => UiAlert)
+}
+// 路由懒加载
+1. const b = () => import('../c');
+2. 
+{
+  path: 'waterFall',
+  name: 'waterFall',
+  menuName: '同行交流',
+  component: () => import('./view/waterfall')
+}
 ```
 
 ## git合并某次commit
@@ -454,7 +470,6 @@ exprot default {
   }
 }
 ```
-
 ## console
 - 如果时基本数据类型，则直接打印。
 - 如果时引用类型，只打印第一层属性
@@ -473,3 +488,20 @@ const c = {
 Object.assign({}, a, c) // { b: undefined }
 {...a, ...b} // { b: undefined }
 ```
+## 获取DOM的样式
+Window.getComputedStyle(dom, ''): 返回一个对象
+```
+Window.getComputedStyle(dom, '')['height'];
+```
+
+## box-sizing失效
+如果目标元素的高度（或宽度）只由其内容、padding、border确定的情况下，则会存在失效情况。
+宽度或高度设置为百分比也会失效
+
+## .cjs,.mjs
+.cjs: 声明该js文件使用的是commonJS的导入导出写法
+.mjs: 声明该js文件使用的是ES6的导入导出写法
+
+## cloneNode(deep)
+1. copy节点。deep决定是否深度拷贝
+2. copy节点时，非内联事件不会被copy，需要重新添加事件。

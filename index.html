@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+    <meta charset="utf-8">
+    <title>学习 Handlebars </title>
+
+    <!-- 1、加载 handlebars 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script>
+
+        // 2、页面加载时，调用下面代码
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const article = `
+                <h1>{{title}}</h1>
+                <h3>{{description}}</h3>
+                <p>{{detail}}</p>
+                <p>{{{test}}}</p>
+            `
+            const data = { title: "第一篇文章", description: "简要", detail: "详细内容", test: "adas"+'<span>qweeqw</span>' + "2321123" };
+
+            // 3、调用 handlebars 解析模板
+            var template = Handlebars.compile(article);
+
+            // 4、加载数据到模板中，并创建元素
+            var root = document.createElement("div");
+            root.innerHTML = template(data);
+
+            // 5、显示在页面中
+            document.body.appendChild(root);
+        });
+      </script>
+
+</head>
+
+<body>
+</body>
+
+</html>
