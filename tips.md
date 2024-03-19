@@ -505,3 +505,56 @@ Window.getComputedStyle(dom, '')['height'];
 ## cloneNode(deep)
 1. copy节点。deep决定是否深度拷贝
 2. copy节点时，非内联事件不会被copy，需要重新添加事件。
+
+## 前端强制不缓存
+1. url后加时间戳
+2. meta中content=no cache
+
+## localstroage报错
+1. 超出存储长度。
+2. 访问受限，调整浏览器的隐私权限。
+
+## 事件委托 加在冒泡阶段
+
+## requestAnimationFrame
+在浏览器下一次重绘之前执行回调函数。
+自动匹配系统的刷新率，确保刷新间隔更精确
+
+## MVC和MVVM
+- M和V指的意思和MVVM中的M和V意思一样。C即Controller指的是页面业务逻辑。使用MVC的目的就是将M和V的代码分离。‘MVC是单向通信。也就是View跟Model，必须通过Controller来承上启下。
+- MVVM 由 Model、View、ViewModel 三部分构成，Model 层代表数据模型，也可以在Model中定义数据修改和操作的业务逻辑；View 代表UI 组件，它负责将数据模型转化成UI 展现出来，ViewModel 是一个同步View 和 Model的对象
+### MVVM解决问题
+1. 开发者在代码中大量调用相同的 DOM API，处理繁琐 ，操作冗余，使得代码难以维护。
+2. 大量的DOM 操作使页面渲染性能降低，加载速度变慢，影响用户体验。
+3.  当 Model 频繁发生变化，开发者需要主动更新到View ；当用户的操作导致 Model 发生变化，开发者同样需要将变化的数据同步到Model中，这样的工作不仅繁琐，而且很难维护复杂多变的数据状态。
+### 区别
+- 并不是VM完全取代了C，ViewModel存在目的在于抽离Controller中展示的业务逻辑，而不是替代Controller，其它视图操作业务等还是应该放在Controller中实现。也就是说MVVM实现的是业务逻辑组件的重用。
+- ViewModel 通过双向数据绑定把 View 层和 Model 层连接了起来，而View 和 Model 之间的同步工作完全是自动的，无需人为干涉，因此开发者只需关注业务逻辑，不需要手动操作DOM， 不需要关注数据状态的同步问题，复杂的数据状态维护完全由 MVVM 来统一管理
+- MVVM只关注数据的变化，更新View自动进行。MVC更新view要主动进行，增加心智负担。
+
+## hsitory
+- 使用 history 模式时，在对当前的页面进行刷新时，此时浏览器会重新发起请求。如果 nginx 没有匹配得到当前的 url ，就会出现 404 的页面。解决：需要通过服务端来允许地址可访问，或配置重定向到index.html。
+- 通过history跳转时，并不会发起请求。配置后端是为了刷新页面，还能返回index.html。
+
+## 预检请求
+复杂请求切发生了跨域才会发预检请求。
+除了复杂请求就是简单请求。
+
+### 简单请求定义：
+1. get post head。
+2. 请求头 只有 accept content-type accept-language content-language。
+3. content-type 只能是 text/plain，multipart/form-data application/x-www-form-urlencoded。
+
+## commonJS和ESmodule
+### commonJS
+1. commonJS是在node中使用，是动态引入。
+2. 加载是同步的，就是说，当加载好了，才会执行后续代码。（node中代码本来就在本地）。
+3. 可以修改引入对象的属性。是对值的拷贝。
+4. 是把导出的内容做了一次浅拷贝。就相当于是在当前文件中定义了一个变量，然后变量的值是来自于require文件中的。(一层浅拷贝)
+5. require，module.exports = {};
+
+### ESmodule
+1. 引入的内容是只读的，不可修改，会报错。是对值的引用。
+2. 是一个指针，指向被引用的地址。不存在拷贝，直接就是一个新的地址，然后也指向那个文件。
+3. 若ES6Module是通过默认导入的变量，则只是对原模块中值的拷贝，不再是引用关系。
+4. export default export import a, {} form '';

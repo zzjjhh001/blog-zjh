@@ -202,9 +202,9 @@ $router:是和路由相关的方法，：router.go,back,forward,push,replace
 12. 绘制
 ### 前端安全
 1. XSS攻击：跨站脚本攻击，
-  - 储存性：向网站的服务器中注入恶意代码。
-  - 反射性：诱导用户点击恶意链接，然后返回恶意代码，浏览器执行
-  - dom型：修改页面的dom
+  - 储存性：向网站的服务器中注入恶意代码。 输入输出存储过滤
+  - 反射性：诱导用户点击恶意链接，然后返回恶意代码，浏览器执行。 encodeURL去转义
+  - dom型：修改页面的dom 
 2. 防御：服务端接受的脚本片段转义。
 3. CSRF攻击：跨站请求伪造，诱导用户进入第三方网站，然后第三方网站使用cookie去通过被攻击网站的登录校验
 4. 防御
@@ -218,9 +218,10 @@ $router:是和路由相关的方法，：router.go,back,forward,push,replace
   - 不能获取非同源网站的DOM 和 JS 对象
   - Ajax请求发送不出去
 ### 跨域解决方案
-1. 服务端设置CORS。就是服务端告诉前端浏览器，我的网站没问题，可以随意访问
-2. jsonp，script标签不被同源限制
-3. nginx或者node中间件：设置反向代理
+1. 服务端设置CORS。就是服务端告诉前端浏览器域名白名单，我的网站没问题，可以随意访问
+2. jsonp，script标签不被同源限制。
+3. nginx或者node中间件：设置反向代理。
+4. websocket不受同源限制。
 ### TCP连接
 ### cookie和session和localstorage
 ## 性能优化
@@ -249,9 +250,9 @@ js的加载解析执行会阻塞页面的渲染过程
 后来有类的概念，一个功能对应一个对象。
 
 ### 模块规范
-commonJS(require)，AMD，CMD，ES6的导入导出(import export)
-commonJS是运行时加载，一个模块就是一个对象，先生成对象，再从对象上取东西
-ES6模块不是对象，是在代码解析的时候就静态导入了。
+- commonJS(require)，AMD，CMD，ES6的导入导出(import export)
+- commonJS是运行时加载，一个模块就是一个对象，先生成对象，再从对象上取东西
+- ES6模块不是对象，是在代码解析的时候就静态导入了。
 ### 异步任务
 process.nextTick 指定的异步任务总是发生在所有异步任务之前
 ### 箭头函数没有arguments

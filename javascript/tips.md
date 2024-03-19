@@ -95,3 +95,121 @@ try {
      5. 无法序列化不可枚举属性。
      6. 无法序列化对象的循环引用，（例如: obj[key] = obj)。
      7. 无法序列化对象的原型链。
+
+## null和undefined
+undefined是无定义的意思，null是空对象
+## 包装对象
+1. 基础数据类型是没有属性和方法的，为了方便使用，会改为包装对象。const a=  2 ====> const a = Number(2);
+2. 主动使用包装对象时，那么值就是对象类型，不是基础类型。
+## fetch和axios
+### fetch
+1. 默认不携带cookies
+2. 响应400，500不报错。不会reject
+3. 不支持abort
+
+## 作用域
+1. 全局作用域，函数作用域，块作用域，动态作用域（call和apply修改this的方式）。
+2. 作用域链的本质上是一个指向变量对象的指针列表。变量对象是一个 包含了执行环境中所有变量和函数的对象。
+### 和上下文区别
+1. 上下文是执行代码的时候确认的，动态的。
+2. 作用域是写代码的时候就确认的，静态的。
+
+## try catch
+1. try catch不能捕获promise中的reject和Throw Error。
+2. try catch能捕获 await中的throw Error和reject。
+3. .catch能捕获 throw Error。
+4. promise那种是异步的，是将代码放到异步队列中执行，这时候已经离开了try catch线程。
+5. 而 await是同步等待代码，所以能够捕获到错误。
+
+## 类数组和数组
+类数组是指去油索引和长度的对象，内部实现了迭代器。但是没有数组的方法。
+常见的类数组：arguments,NodeList等。
+
+## for of和for in
+for of的执行是使用了数据的迭代器，没有实现迭代器就不能使用for of，比如Object，遍历时item是value。
+for in 是用来遍历对象的可枚举的非symbol属性。遍历时item是key。
+
+## 内存泄漏
+未能释放不再使用的内存。在释放这个内存之前已经不在使用它了。
+1. 不合理的闭包。
+2. 意外的全局变量，直接 a = 2。
+3. 忘记删除的setInterval计时器，计时器对外部有引用。
+4. 对DOM的引用，后续DOM被删除了。
+5. 给DOM指定了匿名函数handle，然后DOM被删了，匿名函数会一直在内存中。
+6. vue组件中绑定的事件，发起的请求，建立的websocket，销毁组件时，销毁，断开。
+7. 代码中的循环引用。
+
+## async和 watch，computed
+watch支持异步。
+computed不支持异步。
+
+## Object.create()
+以现有对象为原型，创建一个对象。Object.create({});
+
+## js实现继承
+```javascript
+// 继承就是把一个函数的内部属性方法，让另一个函数也能使用。
+function a() {
+  this.name = 'a';
+}
+function b() {
+
+}
+// 原型链
+// 缺点：共享一个属性。
+b.prototype = new a();
+const bb = new b();
+bb.name;
+
+// 构造函数
+// 原型上的属性不能继承，只能继承counstructor中的this的属性。
+// call等可以改变this的指向
+function b() {
+  a.call(this, arguments);
+}
+const bb = new b();
+bb.name;
+
+// 原型链 加 构造函数
+// a可能会执行两次。同样的属性，this上和原型上都有。
+function b() {
+  a.call(this);
+}
+b.prototype = new a();
+const bb = new b();
+bb.name;有俩： this.name, bb.__proto__.name;
+
+// 原型式
+// 共享原型对象
+Object.create;
+const b = Object.create(a);
+b.__proto__ === a;
+
+// 寄生组合式
+// 基于 原型 + 构造函数 的改进;
+function a() {
+
+}
+function b() {
+  a.call(this);
+}
+b.prototype = Object.create(a.prototype);
+b.prototype.counstructor = a;
+
+```
+class A {
+  // 当前实例，子类的实例
+  public k: '2';
+  // 当前实例可以使用
+  protected d：'1';
+  // 当前实例也不能用，只能在执行当前实例的方法是，方法内部去调用。
+  private _w: '1';
+  counstructor() {
+    this.name = '2';
+  }
+}
+## const let var
+var在最外层是去声明的变量会挂到window上。
+const和let不会，只会放到当前的块作用域。
+## 箭头函数this
+由于箭头函数没有自己的this指针，通过 call() 或apply() 方法调用一个函数时，只能传递参数，他们的第一个参数会被忽略。

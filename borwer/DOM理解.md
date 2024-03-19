@@ -187,7 +187,7 @@ document.getElementById('qq').innerHTML = '<div>qwe</div>'
 - beforeend：插入当前元素内部，作为新的子节点或放在最后一个子节点后面；
 - afterend： 插入当前元素后面，作为下一个同胞节点
 
-#### scrollInotView
+#### scrollIntoView
 滚动视图，效果类似hash锚点跳转。
 ```javascript
 document.querySelector('#qw').scrollIntoView();
