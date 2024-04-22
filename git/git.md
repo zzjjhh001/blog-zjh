@@ -59,6 +59,44 @@ git merge -X ours dev
 ```
 git merge -X theirs dev
 ```
+
+### 回退代码操作
+回退分为几种情况: 暂存区回退，本地仓库回退，远程仓库回退
+#### 暂存区回退
+```
+暂存区代码回退到工作区
+git reset
+
+```
+#### 本地仓库回退
+```
+// 修改某一次的commit信息
+git commit --amend
+// 回退到某一次的commit，之后的提交的内容都会到暂存区，不会直接删掉
+git reset --soft commitId
+// 回退到某一次的commit，之后的提交的内容直接删掉，不会回到工作区或者暂存区
+git reset --hard commitId
+// 
+```
+
+#### 远程仓库回退
+不新增commit实现回退
+```
+// 重置当前分支到特定commit
+// 使用上面本地仓库回退的方案
+git reset
+// 直接强制将远程代码和本地分支同步，会删掉这次commit之后的别人的代码
+git push origin <branch-name> --force
+// 更安全会去判断一下是不是有别人的新的提交
+git push origin <branch-name> --force-with-lease
+```
+新增commit实现回退，安全
+```
+// revert 是新建一个commit去撤销之前提交的更改，新的commit的内容就是被撤销的内容的逆操作。
+git revert commitId
+// 会新建一个commit，然后推到远程就实现了回退，之前提交的commit还存在
+```
+
 ## 操作
 ### 查看git配置信息
 - git config --list
