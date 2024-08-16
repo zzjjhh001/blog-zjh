@@ -252,6 +252,10 @@ js的加载解析执行会阻塞页面的渲染过程
 commonJS(require)，AMD，CMD，ES6的导入导出(import export)
 commonJS是运行时加载，一个模块就是一个对象，先生成对象，再从对象上取东西
 ES6模块不是对象，是在代码解析的时候就静态导入了。
+- import相当于在当前页面创建一个指针，该指针指向export中的default出来的内容。
+- 而require相当于是将导出的文件中export中的default直接复制一份。
+- import 语句获取的是一个到导出值的实时链接（或者说是引用或指针）
+- 而 require 获取的是导出值的一个副本。
 ### 异步任务
 process.nextTick 指定的异步任务总是发生在所有异步任务之前
 ### 箭头函数没有arguments

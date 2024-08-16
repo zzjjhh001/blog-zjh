@@ -59,7 +59,12 @@ git merge -X ours dev
 ```
 git merge -X theirs dev
 ```
-
+## 代码回退
+### 追加提交代码
+```
+git commit --amend
+// 会将当前暂存区的内容与上一次的commit的内容合并。然后修改commit信息，实现追加提交
+```
 ### 回退代码操作
 回退分为几种情况: 暂存区回退，本地仓库回退，远程仓库回退
 #### 暂存区回退
@@ -97,6 +102,13 @@ git revert commitId
 // 会新建一个commit，然后推到远程就实现了回退，之前提交的commit还存在
 ```
 
+## 基于commitId切分支并推送远程
+```sh
+git checkout -b yourNewBranch yourCommitId
+git push origin yourNewBranch
+```
+## revert后操作
+TODO: 
 ## 操作
 ### 查看git配置信息
 - git config --list

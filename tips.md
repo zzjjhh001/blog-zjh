@@ -169,7 +169,7 @@ metaInfo {
 ```javascript
 // 组件懒加载
 components: {
-  c : () => import('../c'); // 推荐使用，(好像需要babel配置)
+  c : () => import('../c'); // 推荐使用，(好像需要babel配置)(import()是ES6新增语法)
   c : () => require('../c'); // 推荐使用
 }
 // 如果组件导入使用命名导出，则可以对返回的 Promise 使用对象解构
@@ -505,3 +505,7 @@ Window.getComputedStyle(dom, '')['height'];
 ## cloneNode(deep)
 1. copy节点。deep决定是否深度拷贝
 2. copy节点时，非内联事件不会被copy，需要重新添加事件。
+
+## try catch和 .catch
+try catch 是同步代码，只能捕获同步的报错，比如代码语法错误等，所以使用try catch时，使用await/async
+.catch可以捕获.then中的报错和前面的语法错误

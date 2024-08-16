@@ -95,3 +95,30 @@ try {
      5. 无法序列化不可枚举属性。
      6. 无法序列化对象的循环引用，（例如: obj[key] = obj)。
      7. 无法序列化对象的原型链。
+
+## forEach和for循环结合await使用场景
+- forEach是同步的，参数传递异步函数时，不会等待异步的执行结束，而是同步的执行多次。
+- for也是同步的，但是它会等待await的执行，然后再进行下一次的循环。
+```javascript
+const getPromise = (data) => {
+  return new Promise((resovle, reject) => {
+    setTimeout(() => {
+      resovle(true);
+    }, 2000)
+  })
+};
+const test = () => {
+  [1, 2, 3].forEach(async (item) => {
+    console.log('start');
+    await getPromise();
+    console.log('end');
+  });
+  // start start start end end end
+  for (let i = 0; i < 3; i++) {
+    console.log('start');
+    await getPromise();
+    console.log('end');
+  }
+  // start end start end start end
+}
+```
