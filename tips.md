@@ -189,6 +189,9 @@ components: {
 
 ## git合并某次commit
 git cherry-pick 提交记录ID
+## 强制分支同步
+git reset --hard online
+git push
 
 ## 滚动条
 1. 默认不展示，hover时展示
@@ -509,3 +512,38 @@ Window.getComputedStyle(dom, '')['height'];
 ## try catch和 .catch
 try catch 是同步代码，只能捕获同步的报错，比如代码语法错误等，所以使用try catch时，使用await/async
 .catch可以捕获.then中的报错和前面的语法错误
+
+## 显式和隐式的undefined
+- 显式undefined：指定了某个值是undefined
+```javascript
+let a = undefined
+```
+- 隐式undefined
+```javascript
+const a = { c: 2 }
+a.b // undefined
+function d(a) {
+  console.log(a)
+}
+d() // undefined
+```
+### 区别
+- 对象属性
+显式：hasOwnProperty， in操作符会找到它，隐式相反
+- JSON序列化
+当 undefined 作为对象的属性值时，该属性会被忽略。
+当 undefined 出现在数组中时，它会被转换为 null。
+当 undefined 作为单独的值时，它会被转换为 undefined 字符串。
+- 函数参数
+显式：作为函数参数时，显式会覆盖默认值，隐式相反
+### 建议
+不要使用显式的undefined，用null代替它
+
+## ?? 和 ||
+- ??： 为null和undefined时，取后者
+- ||： 任何为falsy的值都取后者
+- 当需要把 0 '' 作为有效输入时，使用 ??
+```javascript
+const a = 0 ?? 1 /// a = 0
+const c = '' ?? 'default' // c = ''
+```
